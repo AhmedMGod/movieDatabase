@@ -43,14 +43,14 @@ public class MovieDatabaseServiceTest {
     }
 
     @Test
-    public void add_Movie_To_Database() {
-        Movie addMovie = new Movie(2, "Animals", "Documentation", "Life of some animals.");
-        movieRepository.save(addMovie);
+    public void should_Add_Movie_To_Database() {
+        Movie newMovie = new Movie(2, "Animals", "Documentation", "Life of some animals.");
+        movieRepository.save(newMovie);
 
-        when(movieRepository.save(addMovie)).thenReturn(addMovie);
+        when(movieRepository.save(any(Movie.class))).thenReturn(newMovie);
 
-        Movie actual = movieService.getMovie(2);
-        assertEquals(addMovie, actual);
+        Movie actual = movieService.addMovie(newMovie);
+        assertEquals(newMovie, actual);
     }
 
     @Test
@@ -60,7 +60,6 @@ public class MovieDatabaseServiceTest {
         movieRepository.save(newMovie);
 
         when(movieRepository.findById(expectedId)).thenReturn(Optional.of(newMovie));
-        when(movieRepository.save(any(Movie.class))).thenReturn(newMovie);
 
         Movie actual = movieService.getMovie(expectedId);
         assertEquals(newMovie, actual);
