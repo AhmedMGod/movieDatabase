@@ -4,13 +4,13 @@ import { useNavigate, useParams } from "react-router-dom";
 
 const MovieComponent = () => {
 
-    const [inputId, setId] = useState("");
+    const [id, setId] = useState("");
     const [title, setTitle] = useState("");
     const [genre, setGenre] = useState("");
     const [description, setDescription] = useState("");
     const [image, setImage] = useState("");
 
-    const {id} = useParams();
+    const {paramId} = useParams();
     const [errors, setErrors] = useState({
         id: "",
         title: "",
@@ -21,8 +21,8 @@ const MovieComponent = () => {
     const navigator = useNavigate();
 
     useEffect(() => {
-        if(id){
-            getMovieById(id).then((repsonse) => {
+        if(paramId){
+            getMovieById(paramId).then((repsonse) => {
                 setTitle(repsonse.data.title);
                 setGenre(repsonse.data.genre);
                 setDescription(repsonse.data.description);
@@ -30,17 +30,17 @@ const MovieComponent = () => {
                 console.error(error);
             })
         }
-    }, [id]);
+    }, [paramId]);
 
     function saveOrUpdateMovie(e){
         e.preventDefault();
 
         if(validateForm()){
-            const movie = {inputId, title, genre, description, image};
-            console.log(movie.inputId);
-            if(id){
-                updateMovie(movie.inputId, movie).then((repsonse) => {
-                    console.log(repsonse.data);
+            const movie = {id, title, genre, description, image};
+            console.log(movie.id);
+            if(paramId){
+                updateMovie(movie.id, movie).then((response) => {
+                    console.log(response.data);
                     navigator("/movie");
                 }).catch(error => {
                     console.error(error);
@@ -62,7 +62,7 @@ const MovieComponent = () => {
 
         const errorsCopy = {... errors}
 
-        if(inputId.trim()){
+        if(id.trim()){
             errorsCopy.id = "";
         } else {
             errorsCopy.id = "Id muss angegeben werden!"
@@ -97,7 +97,7 @@ const MovieComponent = () => {
     }
 
     function pageTitle(){
-        if(id) {
+        if(paramId) {
             return <h2 className="text-center">Änder Film um</h2>
         } else {
             return <h2 className="text-center">Füge einen Film hinzu</h2>
@@ -119,7 +119,7 @@ const MovieComponent = () => {
                                     type="number"
                                     placeholder="Gib die Platzierung ein"
                                     name="id"
-                                    value={inputId}
+                                    value={id}
                                     className={`form-control ${errors.id ? `is-invalid`: "" }`}
                                     onChange={(e) => setId(e.target.value)}
                                 >
