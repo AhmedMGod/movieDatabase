@@ -5,9 +5,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin("*")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("movie")
+@RequestMapping("api/movie")
 public class MovieController {
 
     private final MovieService movieService;
